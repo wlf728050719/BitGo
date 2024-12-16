@@ -1,0 +1,123 @@
+import {ProductInShoppingCart} from '../../../model/ProductInShoppingCart'
+import ProductModel from '../../../model/ProductModel'
+import { router } from '@kit.ArkUI'
+
+@Component
+struct ProductBar
+{
+  @Prop productInShoppingCart:ProductInShoppingCart
+  @Prop selected:boolean
+  changeNum =(product:ProductModel,target:number)=>{}
+  addSelectedProduct=(productInShoppingCart:ProductInShoppingCart)=>{}
+  removeSelectedProduct=(productInShoppingCart:ProductInShoppingCart)=>{}
+  setSelectAllStatus=(status:boolean)=>{}
+  build() {
+    Column(){
+      Row(){
+        Checkbox({name:'select',group:'selectGroup'})
+          .select(this.selected)
+          .selectedColor(Color.Red)
+          .height('50%')
+          .onChange((value:boolean)=>{
+            if(value)
+              this.addSelectedProduct(this.productInShoppingCart)
+            else
+            {
+              this.setSelectAllStatus(false)
+              this.removeSelectedProduct(this.productInShoppingCart)
+            }
+          })
+        Text('华为手机商城')
+          .fontSize(12)
+        Blank()
+        Row(){
+          Text('详情')
+            .fontSize(12)
+            .fontColor(Color.Gray)
+          Image($r('app.media.ic_public_arrow_right'))
+            .height('60%')
+            .colorBlend(Color.Gray)
+        }
+        .onClick(()=>{
+          router.pushUrl({
+            url:'pages/Product',
+            params:{
+              productModel:this.productInShoppingCart.productModel
+            }
+          })
+        })
+      }
+      .width('100%')
+      .height('20%')
+      Row(){
+        Image($r(this.productInShoppingCart.productModel.images[0]))
+          .height('90%')
+          .width('40%')
+        Column(){
+          Text(this.productInShoppingCart.productModel.name)
+            .width('80%')
+            .fontSize(16)
+          Divider()
+            .height(2)
+            .color(Color.Gray)
+            .width('80%')
+            .margin({ top:5 })
+          Text(this.productInShoppingCart.productModel.description)
+            .width('80%')
+            .fontColor(Color.Gray)
+            .fontSize(8)
+            .margin({
+              bottom:5
+            })
+            .maxLines(3)
+            .textOverflow({
+              overflow:TextOverflow.Ellipsis
+            })
+          Text('发货地址：'+this.productInShoppingCart.productModel.location)
+            .width('80%')
+            .fontSize(10)
+        }
+        .height('90%')
+        .width('60%')
+      }
+      .width('100%')
+      .height('60%')
+      Row()
+      {
+        Blank()
+        Text('￥'+(this.productInShoppingCart.productModel.price).toString())
+          .fontColor(Color.Red)
+          .fontSize(15)
+        Image($r('app.media.ic_public_arrow_left'))
+          .height('60%')
+          .onClick(()=>{
+            if(this.productInShoppingCart.num>0)
+              this.changeNum(this.productInShoppingCart.productModel,this.productInShoppingCart.num-1)
+          })
+        Text(this.productInShoppingCart.num.toString())
+          .backgroundColor('#ffefefef')
+          .width('10%')
+          .height('80%')
+          .textAlign(TextAlign.Center)
+          .borderRadius(10)
+        Image($r('app.media.ic_public_arrow_right'))
+          .height('60%')
+          .onClick(()=>{
+            if(this.productInShoppingCart.num<99)
+              this.changeNum(this.productInShoppingCart.productModel,this.productInShoppingCart.num+1)
+          })
+      }
+      .width('100%')
+      .height('20%')
+    }
+    .backgroundColor(Color.White)
+    .width('100%')
+    .height('20%')
+    .border({
+      width:2,
+      color:Color.Gray
+    })
+    .borderRadius(10)
+  }
+}
+export default ProductBar
