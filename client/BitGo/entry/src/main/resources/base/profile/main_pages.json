@@ -1,0 +1,17 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/CountryRegion",
+    "pages/Login",
+    "pages/Product",
+    "pages/BrowseBuyOrder",
+    "pages/Pay",
+    "pages/MyProducts",
+    "pages/Register",
+    "pages/WriteComment",
+    "pages/BrowseStore",
+    "pages/ChangeUserInfo",
+    "pages/BrowseSellOrder",
+    "pages/UserFavorites"
+  ]
+}
